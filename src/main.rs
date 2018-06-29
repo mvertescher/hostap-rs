@@ -1,3 +1,8 @@
+//! Host 802.11 access point creation utility
+
+extern crate hostap;
+
 fn main() {
-    println!("Hello, world!");
+    let args = hostap::cli::Args::parse();
+    println!("Arguments: {:#?}", args);
 }

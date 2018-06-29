@@ -2,5 +2,14 @@
 name = "hostap"
 version = "0.1.0"
 authors = ["Matt Vertescher <mvertescher@gmail.com>"]
+license = "Apache-2.0"
+description = """
+Host 802.11 access point creation utility
+"""
+
+[[bin]]
+path = "src/main.rs"
+name = "hostap"
 
 [dependencies]
+clap = "2"
