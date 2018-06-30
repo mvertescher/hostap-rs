@@ -51,4 +51,7 @@ pub fn ignore_interface(interface: &str) {
 
     ini.write_to_file(network_manager_config)
         .expect("Failed to write ini file");
+
+    // Restart since the configuration has changed
+    restart();
 }

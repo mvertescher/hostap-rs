@@ -6,4 +6,5 @@ extern crate network_manager as nm;
 
 pub mod cli;
 pub mod core;
+pub mod hostapd;
 pub mod network_manager;

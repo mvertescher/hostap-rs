@@ -11,6 +11,9 @@ fn main() {
         return;
     }
 
-    hostap::network_manager::ignore_interface(args.interface.as_ref());
-    hostap::network_manager::restart();
+    let interface = args.interface.as_ref();
+    hostap::network_manager::ignore_interface(interface);
+
+    hostap::hostapd::down();
+    hostap::hostapd::up(interface);
 }
