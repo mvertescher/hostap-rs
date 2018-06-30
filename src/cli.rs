@@ -2,19 +2,22 @@
 
 use clap::{App, Arg};
 use std::path::PathBuf;
+use core;
 
 /// Arguments passed in on the command line
 #[derive(Debug)]
 pub struct Args {
+    pub interface: String,
+    pub gateway: String,
     pub config: Option<PathBuf>,
-    pub interface: Option<String>,
 }
 
 impl Default for Args {
     fn default() -> Args {
         Args {
-			interface: None,
-			config: None,
+            interface: "wlan0".to_string(),  // TODO: search for default interface?
+            gateway: core::default_gateway(),
+            config: None,
         }
     }
 }
@@ -32,21 +35,21 @@ impl Args {
              .long("config")
              .value_name("CONFIG")
              .help("Configuration file path")
-			 .takes_value(true))
+             .takes_value(true))
         .arg(Arg::with_name("interface")
              .short("i")
              .long("interface")
              .value_name("INTERFACE")
              .help("Name of the virtual interface to use")
-			 .takes_value(true))
-		.get_matches();
+             .takes_value(true))
+        .get_matches();
 
         if let Some(path) = matches.value_of("config") {
             args.config = Some(PathBuf::from(path.to_string()));
         }
 
         if let Some(interface) = matches.value_of("interface") {
-            args.interface = Some(interface.to_string());
+            args.interface = interface.to_string();
         }
 
         args
