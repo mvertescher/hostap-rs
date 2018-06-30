@@ -12,4 +12,5 @@ fn main() {
     }
 
     hostap::network_manager::ignore_interface(args.interface.as_ref());
+    hostap::network_manager::restart();
 }

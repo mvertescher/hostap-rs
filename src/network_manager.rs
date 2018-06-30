@@ -1,6 +1,15 @@
 //! Network manager interface
 
 use ini::Ini;
+use nm;
+
+/// Restart NetworkManager
+///
+/// Warning: This with cycle your host's connection
+pub fn restart() {
+    nm::NetworkManager::stop_service(10).unwrap();
+    nm::NetworkManager::start_service(10).unwrap();
+}
 
 /// Tell NetworkManager to ignore a specific interface.
 ///
