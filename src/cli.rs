@@ -1,8 +1,8 @@
 //! Command line argument parsing
 
 use clap::{App, Arg};
+use iproute2;
 use std::path::PathBuf;
-use core;
 
 /// Arguments passed in on the command line
 #[derive(Debug)]
@@ -16,7 +16,7 @@ impl Default for Args {
     fn default() -> Args {
         Args {
             interface: "wlan0".to_string(),  // TODO: search for default interface?
-            gateway: core::default_gateway(),
+            gateway: iproute2::default_gateway(),
             config: None,
         }
     }
