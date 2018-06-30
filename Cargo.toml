@@ -13,3 +13,5 @@ name = "hostap"
 
 [dependencies]
 clap = "2"
+network-manager = "0.11"
+rust-ini = "0.12"
