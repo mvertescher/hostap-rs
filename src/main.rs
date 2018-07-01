@@ -12,8 +12,10 @@ fn main() {
     }
 
     let interface = args.interface.as_ref();
+    let gateway = args.gateway.as_ref();
     hostap::network_manager::ignore_interface(interface);
 
+    hostap::iptables::down(interface, gateway);
     hostap::dhcpd::down();
     hostap::hostapd::down();
     hostap::iproute2::interface_down(interface);
@@ -21,6 +23,7 @@ fn main() {
     hostap::iproute2::interface_up(interface);
     hostap::hostapd::up(interface);
     hostap::dhcpd::up(interface);
+    hostap::iptables::up(interface, gateway);
 }
 
 /// Temporary debug function
