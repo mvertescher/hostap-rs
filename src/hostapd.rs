@@ -66,8 +66,7 @@ pub fn up(interface: &str) {
     config.to_file(&config_path);
 
     let output = Command::new("hostapd")
-        .args(&["-B", "-t", "-K"])
-        .args(&["-f", "hostapd.log"])
+        .args(&["-B", "-t", "-K", "-f", "hostapd.log"])
         .arg(config_path.to_str().unwrap())
         .output()
         .expect("failed to execute process");

@@ -14,11 +14,13 @@ fn main() {
     let interface = args.interface.as_ref();
     hostap::network_manager::ignore_interface(interface);
 
+    hostap::dhcpd::down();
     hostap::hostapd::down();
     hostap::iproute2::interface_down(interface);
 
     hostap::iproute2::interface_up(interface);
     hostap::hostapd::up(interface);
+    hostap::dhcpd::up(interface);
 }
 
 /// Temporary debug function
