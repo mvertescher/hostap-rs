@@ -12,6 +12,10 @@ env:
   global:
     - PROJECT_NAME: hostap
     - RUST_BACKTRACE: full
+addons:
+  apt:
+    packages:
+      - libdbus-1-dev
 notifications:
   email:
     on_success: never
