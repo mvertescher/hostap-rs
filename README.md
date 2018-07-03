@@ -1,5 +1,6 @@
 # hostap
 [![Build Status](https://travis-ci.com/mvertescher/hostap-rs.svg?branch=master)](https://travis-ci.com/mvertescher/hostap-rs)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 hostap is a Linux tool for debugging 802.11 wireless devices.
 It provides an out of the box solution for eavesdropping on Wi-Fi devices for
