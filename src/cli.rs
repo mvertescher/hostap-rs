@@ -2,6 +2,8 @@
 
 use clap::{App, Arg};
 use iproute2;
+use pretty_env_logger;
+use log;
 use std::path::PathBuf;
 
 /// Arguments passed in on the command line
@@ -30,6 +32,10 @@ impl Args {
             .version(crate_version!())
             .author(crate_authors!())
             .about(crate_description!())
+        .arg(Arg::with_name("v")
+             .short("v")
+             .multiple(true)
+             .help("Sets the level of verbosity"))
         .arg(Arg::with_name("config")
              .short("c")
              .long("config")
@@ -43,6 +49,11 @@ impl Args {
              .help("Name of the virtual interface to use")
              .takes_value(true))
         .get_matches();
+
+        if matches.is_present("v") {
+            ::std::env::set_var("RUST_LOG", "info");
+        }
+        pretty_env_logger::init();
 
         if let Some(path) = matches.value_of("config") {
             args.config = Some(PathBuf::from(path.to_string()));

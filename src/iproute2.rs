@@ -17,7 +17,12 @@ pub fn interface_up(interface: &str) {
         .args(&["link", "set", "dev", interface, "up"])
         .output()
         .expect("failed to execute process");
-    assert!(output.status.success())
+    // TODO: Improve this error case
+    if !output.status.success() {
+        info!("Failed to bring up interface 'ip link set dev {} up'", interface);
+        info!("Maybe: 'rfkkill unblock all'");
+        assert!(output.status.success())
+    }
 }
 
 pub fn interface_down(interface: &str) {

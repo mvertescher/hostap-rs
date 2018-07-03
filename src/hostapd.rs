@@ -70,8 +70,8 @@ pub fn up(interface: &str) {
         .arg(config_path.to_str().unwrap())
         .output()
         .expect("failed to execute process");
-    println!("{}", String::from_utf8_lossy(&output.stdout));
-    println!("{}", String::from_utf8_lossy(&output.stderr));
+    info!("{}", String::from_utf8_lossy(&output.stdout));
+    info!("{}", String::from_utf8_lossy(&output.stderr));
 }
 
 /// Tear down hostapd

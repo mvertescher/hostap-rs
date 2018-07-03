@@ -1,13 +1,15 @@
 //! Host 802.11 access point creation utility
 
 extern crate hostap;
+#[macro_use] extern crate log;
+extern crate pretty_env_logger;
 
 fn main() {
     let args = hostap::cli::Args::parse();
-    println!("Arguments: {:#?}", args);
+    info!("Arguments: {:#?}", args);
 
     if !hostap::iproute2::interface_exists(args.interface.as_ref()) {
-        println!("interface {} does not exist!", args.interface);
+        error!("interface {} does not exist!", args.interface);
         return;
     }
 

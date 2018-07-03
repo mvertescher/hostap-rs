@@ -14,5 +14,7 @@ name = "hostap"
 [dependencies]
 clap = "2"
 iptables = "0.2"
+log = "0.4"
 network-manager = "0.11"
+pretty_env_logger = "0.2"
 rust-ini = "0.12"
