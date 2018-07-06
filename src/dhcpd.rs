@@ -6,7 +6,9 @@ use std::io::prelude::*;
 use std::net::Ipv4Addr;
 use std::path::PathBuf;
 use std::process::Command;
+use std::str::FromStr;
 
+#[derive(Debug)]
 pub struct Config {
     /// String to be appended to the top of the configuration file
     header: String,
@@ -31,7 +33,7 @@ impl Default for Config {
             subnet: Ipv4Addr::new(10, 1, 1, 0),
             host: Ipv4Addr::new(10, 1, 1, 1),
             subnet_mask: Ipv4Addr::new(255, 255, 255, 0),
-            dns_servers: vec!(Ipv4Addr::new(8, 8, 8, 8)),
+            dns_servers: get_host_dns_servers(),
             min_range: Ipv4Addr::new(10, 1, 1, 10),
             max_range: Ipv4Addr::new(10, 1, 1, 100),
         }
@@ -53,9 +55,14 @@ impl Config {
         string.push_str(&format!("  option routers {};\n", self.host));
         string.push_str(&format!("  option subnet-mask {};\n", self.subnet_mask));
         string.push_str(&format!("  option domain-search \"{}\";\n", self.domain_name));
+
+        string.push_str(&format!("  option domain-name-servers\n "));
         for dns_server in self.dns_servers {
-            string.push_str(&format!("  option domain-name-servers {};\n", dns_server));
+            string.push_str(&format!(" {},", dns_server));
         }
+        string.pop();  // Remove final ','
+        string.push_str(&format!(";\n"));
+
         string.push_str(&format!("  range {} {};\n", self.min_range, self.max_range));
         string.push_str("}\n");
 
@@ -70,22 +77,53 @@ impl Config {
     }
 }
 
+/// Get the host's configured dns servers from resolv.conf
+fn get_host_dns_servers() -> Vec<Ipv4Addr> {
+    let path = PathBuf::from("/etc/resolv.conf");
+    let file = File::open(path)
+        .expect("failed to open file");
+    let file = ::std::io::BufReader::new(&file);
+    let mut servers: Vec<Ipv4Addr> = Vec::new();
+    for line in file.lines() {
+        let line = line.unwrap();
+        let mut split = line.split(" ");
+        match split.next() {
+            Some(s) => {
+                if s != "nameserver" {
+                    continue;
+                }
+            },
+            None => continue,
+        }
+        match split.next() {
+            Some(s) => servers.push(Ipv4Addr::from_str(s).unwrap()),
+            None => continue,
+        }
+    }
+    servers
+}
+
 /// Start dhcpd on the specified interface
 pub fn up(interface: &str) {
     let mut config_path = PathBuf::from("/etc/dhcp/wlan-dhcpd.conf");
     ::std::fs::create_dir_all(config_path.parent().unwrap());
 
     let config = Config::default();
+    info!("{:#?}", config);
     let host_ip = config.host;
     config.to_file(&config_path);
 
+    info!("Assigning interface {} IP address to {}", interface, host_ip);
     Command::new("ip")
         .args(&["addr", "add", &format!("{}/24", host_ip), "dev", interface])
         .output()
         .expect("failed to execute process");
 
+    info!("Starting dhcpd");
     let child = Command::new("dhcpd")
         .args(&["-f", "-d", "-cf", config_path.to_str().unwrap(), interface])
+        .stdout(::std::process::Stdio::null())
+        .stderr(::std::process::Stdio::null())
         .spawn()
         .expect("failed to execute child");
 }
