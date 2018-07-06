@@ -1,7 +1,7 @@
 //! hostapd management
 
 use core;
-use std::fs::File;
+use std::fs::{self, File};
 use std::io::prelude::*;
 use std::path::PathBuf;
 use std::process::Command;
@@ -72,6 +72,7 @@ pub fn up(interface: &str) {
         .expect("failed to execute process");
     info!("{}", String::from_utf8_lossy(&output.stdout));
     info!("{}", String::from_utf8_lossy(&output.stderr));
+    fs::remove_file(config_path).unwrap();
 }
 
 /// Tear down hostapd
