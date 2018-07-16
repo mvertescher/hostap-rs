@@ -9,30 +9,22 @@ fn main() {
     info!("Arguments: {:#?}", args);
 
     if !hostap::iproute2::interface_exists(args.interface.as_ref()) {
-        error!("interface {} does not exist!", args.interface);
-        return;
-    }
-
-    if args.command == hostap::cli::Command::Info {
-        info!("TODO: Log some info about the current state");
+        eprintln!("interface {} does not exist!", args.interface);
         return;
     }
 
     let interface = args.interface.as_ref();
     let gateway = args.gateway.as_ref();
+    if args.command == hostap::cli::Command::Info {
+        hostap::state::info(interface);
+        return;
+    }
+
     hostap::network_manager::ignore_interface(interface);
-
-    hostap::iptables::down(interface, gateway);
-    hostap::dhcpd::down();
-    hostap::hostapd::down();
-    hostap::iproute2::interface_down(interface);
-
+    hostap::state::down(interface, gateway);
 
     if args.command == hostap::cli::Command::Up {
-        hostap::iproute2::interface_up(interface);
-        hostap::hostapd::up(interface);
-        hostap::dhcpd::up(interface);
-        hostap::iptables::up(interface, gateway);
+        hostap::state::up(interface, gateway);
     }
 }
 

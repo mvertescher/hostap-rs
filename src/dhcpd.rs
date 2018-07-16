@@ -106,7 +106,7 @@ fn get_host_dns_servers() -> Vec<Ipv4Addr> {
 /// Start dhcpd on the specified interface
 pub fn up(interface: &str) {
     let mut config_path = PathBuf::from("/etc/dhcp/wlan-dhcpd.conf");
-    ::std::fs::create_dir_all(config_path.parent().unwrap());
+    ::std::fs::create_dir_all(config_path.parent().unwrap()).unwrap();
 
     let config = Config::default();
     info!("{:#?}", config);
