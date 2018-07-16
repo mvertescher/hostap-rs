@@ -3,7 +3,6 @@
 use clap::{App, Arg};
 use iproute2;
 use pretty_env_logger;
-use log;
 use std::path::PathBuf;
 
 /// Arguments passed in on the command line
@@ -12,6 +11,15 @@ pub struct Args {
     pub interface: String,
     pub gateway: String,
     pub config: Option<PathBuf>,
+    pub command: Command,
+}
+
+/// Arguments passed in on the command line
+#[derive(Debug, PartialEq)]
+pub enum Command {
+    Up,
+    Down,
+    Info,
 }
 
 impl Default for Args {
@@ -20,6 +28,7 @@ impl Default for Args {
             interface: "wlan0".to_string(),  // TODO: search for default interface?
             gateway: iproute2::default_gateway(),
             config: None,
+            command: Command::Info,
         }
     }
 }
@@ -48,6 +57,11 @@ impl Args {
              .value_name("INTERFACE")
              .help("Name of the virtual interface to use")
              .takes_value(true))
+        .arg(Arg::with_name("command")
+             .help("Task to run")
+             .index(1)
+             .possible_values(&["up", "down", "info"])
+             .required(true))
         .get_matches();
 
         if matches.is_present("v") {
@@ -61,6 +75,13 @@ impl Args {
 
         if let Some(interface) = matches.value_of("interface") {
             args.interface = interface.to_string();
+        }
+
+        match matches.value_of("command").unwrap() {
+            "up" => args.command = Command::Up,
+            "down" => args.command = Command::Down,
+            "info" => args.command = Command::Info,
+            _ => unreachable!(),
         }
 
         args

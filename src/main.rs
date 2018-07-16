@@ -13,6 +13,11 @@ fn main() {
         return;
     }
 
+    if args.command == hostap::cli::Command::Info {
+        info!("TODO: Log some info about the current state");
+        return;
+    }
+
     let interface = args.interface.as_ref();
     let gateway = args.gateway.as_ref();
     hostap::network_manager::ignore_interface(interface);
@@ -22,10 +27,13 @@ fn main() {
     hostap::hostapd::down();
     hostap::iproute2::interface_down(interface);
 
-    hostap::iproute2::interface_up(interface);
-    hostap::hostapd::up(interface);
-    hostap::dhcpd::up(interface);
-    hostap::iptables::up(interface, gateway);
+
+    if args.command == hostap::cli::Command::Up {
+        hostap::iproute2::interface_up(interface);
+        hostap::hostapd::up(interface);
+        hostap::dhcpd::up(interface);
+        hostap::iptables::up(interface, gateway);
+    }
 }
 
 /// Temporary debug function
