@@ -1,7 +1,7 @@
 //! Network manager interface
 
 use ini::Ini;
-use nm;
+use crate::nm;
 
 /// Restart NetworkManager
 ///

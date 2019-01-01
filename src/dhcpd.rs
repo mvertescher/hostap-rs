@@ -1,6 +1,6 @@
 //! dhcpd management
 
-use core;
+use crate::core;
 use std::fs::File;
 use std::io::prelude::*;
 use std::net::Ipv4Addr;
@@ -105,7 +105,7 @@ fn get_host_dns_servers() -> Vec<Ipv4Addr> {
 
 /// Start dhcpd on the specified interface
 pub fn up(interface: &str) {
-    let mut config_path = PathBuf::from("/etc/dhcp/wlan-dhcpd.conf");
+    let config_path = PathBuf::from("/etc/dhcp/wlan-dhcpd.conf");
     ::std::fs::create_dir_all(config_path.parent().unwrap()).unwrap();
 
     let config = Config::default();
@@ -120,7 +120,7 @@ pub fn up(interface: &str) {
         .expect("failed to execute process");
 
     info!("Starting dhcpd");
-    let child = Command::new("dhcpd")
+    let _child = Command::new("dhcpd")
         .args(&["-f", "-d", "-cf", config_path.to_str().unwrap(), interface])
         .stdout(::std::process::Stdio::null())
         .stderr(::std::process::Stdio::null())

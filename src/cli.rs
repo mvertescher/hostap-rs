@@ -1,7 +1,7 @@
 //! Command line argument parsing
 
 use clap::{App, Arg};
-use iproute2;
+use crate::iproute2;
 use pretty_env_logger;
 use std::path::PathBuf;
 

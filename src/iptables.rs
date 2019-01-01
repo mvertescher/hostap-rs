@@ -1,6 +1,6 @@
 //! iptables management
 
-use ipt;
+use crate::ipt;
 use std::process::Command;
 
 pub fn up(interface: &str, gateway: &str) {

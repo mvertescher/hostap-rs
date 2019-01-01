@@ -3,10 +3,10 @@
 // #[macro_use] extern crate log;
 // extern crate pretty_env_logger;
 
-use dhcpd;
-use hostapd;
-use iproute2;
-use iptables;
+use crate::dhcpd;
+use crate::hostapd;
+use crate::iproute2;
+use crate::iptables;
 
 /// Bring up hostap for the interface and gateway
 pub fn up(interface: &str, gateway: &str) {
