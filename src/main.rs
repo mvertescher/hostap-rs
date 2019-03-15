@@ -8,7 +8,7 @@ fn main() {
 
     if !hostap::iproute2::interface_exists(args.interface.as_ref()) {
         eprintln!("interface {} does not exist!", args.interface);
-        return;
+        std::process::exit(1);
     }
 
     let interface = args.interface.as_ref();
