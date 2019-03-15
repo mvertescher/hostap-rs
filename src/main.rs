@@ -1,8 +1,6 @@
 //! Host 802.11 access point creation utility
 
-extern crate hostap;
-#[macro_use] extern crate log;
-extern crate pretty_env_logger;
+use log::*;
 
 fn main() {
     let args = hostap::cli::Args::parse();

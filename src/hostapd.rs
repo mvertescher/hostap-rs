@@ -1,10 +1,13 @@
 //! hostapd management
 
-use crate::core;
 use std::fs::{self, File};
 use std::io::prelude::*;
 use std::path::PathBuf;
 use std::process::Command;
+
+use crate::core;
+
+use log::*;
 
 /// Represent the hostapd configuration as an ordered set of key/value pairs
 pub struct Config(Vec<(String, String)>);

@@ -1,6 +1,8 @@
 //! Basic iproute2 API
 
-use std::process::{Command, ExitStatus};
+use std::process::Command;
+
+use log::*;
 
 /// Check if an interface exists by name
 pub fn interface_exists(interface: &str) -> bool {

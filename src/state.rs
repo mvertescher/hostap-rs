@@ -1,12 +1,11 @@
 //! Stack state management module
 
-// #[macro_use] extern crate log;
-// extern crate pretty_env_logger;
-
 use crate::dhcpd;
 use crate::hostapd;
 use crate::iproute2;
 use crate::iptables;
+
+use log::*;
 
 /// Bring up hostap for the interface and gateway
 pub fn up(interface: &str, gateway: &str) {

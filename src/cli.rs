@@ -1,9 +1,11 @@
 //! Command line argument parsing
 
-use clap::{App, Arg};
-use crate::iproute2;
-use pretty_env_logger;
 use std::path::PathBuf;
+
+use crate::iproute2;
+
+use clap::{App, Arg};
+use clap::{crate_authors, crate_description, crate_name, crate_version};
 
 /// Arguments passed in on the command line
 #[derive(Debug)]

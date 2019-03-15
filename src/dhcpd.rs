@@ -1,12 +1,15 @@
 //! dhcpd management
 
-use crate::core;
 use std::fs::File;
 use std::io::prelude::*;
 use std::net::Ipv4Addr;
 use std::path::PathBuf;
 use std::process::Command;
 use std::str::FromStr;
+
+use crate::core;
+
+use log::*;
 
 #[derive(Debug)]
 pub struct Config {
