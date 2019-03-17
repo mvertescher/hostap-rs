@@ -27,6 +27,7 @@ fn main() {
 }
 
 /// Temporary debug function
+#[allow(dead_code)]
 fn sleep(secs: u64) {
     ::std::thread::sleep(::std::time::Duration::new(secs, 0));
 }
