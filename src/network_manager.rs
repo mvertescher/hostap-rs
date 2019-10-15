@@ -5,7 +5,7 @@ use crate::nm;
 
 /// Restart NetworkManager
 ///
-/// Warning: This with cycle your host's connection
+/// Warning: This will cycle your host's connection
 pub fn restart() {
     nm::NetworkManager::stop_service(10).unwrap();
     nm::NetworkManager::start_service(10).unwrap();
