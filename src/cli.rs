@@ -16,7 +16,7 @@ pub struct Args {
     pub command: Command,
 }
 
-/// Arguments passed in on the command line
+/// User-specified command to execute
 #[derive(Debug, PartialEq)]
 pub enum Command {
     Up,
