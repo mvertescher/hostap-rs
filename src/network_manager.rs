@@ -47,7 +47,7 @@ pub fn ignore_interface(interface: &str) {
 
     // Write a key/value to ignore the interface
     ini.with_section(Some("keyfile".to_owned()))
-        .set("unmanaged-devices", expected_value.as_ref());
+        .set("unmanaged-devices", &expected_value);
 
     ini.write_to_file(network_manager_config)
         .expect("Failed to write ini file");
